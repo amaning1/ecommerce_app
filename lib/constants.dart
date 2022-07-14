@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+
+const textStyle0 = TextStyle(fontSize: 14, fontFamily: 'Poppins');
+
 class Textfield0 extends StatelessWidget {
   const Textfield0({Key? key, required this.controller, this.icon})
       : super(key: key);
