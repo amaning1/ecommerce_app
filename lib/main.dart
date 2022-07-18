@@ -1,6 +1,10 @@
+import 'package:ecommerce/controllers/manage.dart';
+import 'package:ecommerce/controllers/products-provider.dart';
+import 'package:ecommerce/views/cart-page.dart';
 import 'package:ecommerce/views/landing_page.dart';
 import 'package:ecommerce/views/sign_in.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,17 +16,22 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'To You',
-      theme: ThemeData(
-        primarySwatch: Colors.blueGrey,
+    return MultiProvider(
+      providers: [ChangeNotifierProvider.value(value: Manage()),
+      ChangeNotifierProvider(create: (_)=> ProductProvider())],
+      child: MaterialApp(
+        title: 'To You',
+        theme: ThemeData(
+          primarySwatch: Colors.blueGrey,
+        ),
+        home: const LandingPage(),
+        initialRoute: '/landingPage',
+        routes: {
+          '/landingPage': (context) => const LandingPage(),
+          'loginPage': (context) => const SignIn(),
+          'cartPage': (context) => const CartPage(),
+        },
       ),
-      home: const LandingPage(),
-      initialRoute: '/landingpage',
-      routes: {
-        '/landingpage': (context) => const LandingPage(),
-        'loginpage': (context) => const SignIn(),
-      },
     );
   }
 }

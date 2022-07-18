@@ -1,9 +1,11 @@
 import 'package:ecommerce/constants.dart';
+import 'package:ecommerce/controllers/products-provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 
-class ProductsGrid extends StatelessWidget {
-   const ProductsGrid({Key? key, this.height, this.width, required this.imageLink, required this.name, required this.price}) : super(key: key);
+class ProductsGrid extends StatefulWidget {
+    ProductsGrid({Key? key,required this.isLiked, this.height, this.width, required this.imageLink, required this.name, required this.price, this.changeFavourite}) : super(key: key);
 
 
   final height;
@@ -11,10 +13,19 @@ class ProductsGrid extends StatelessWidget {
   final String imageLink;
   final String name;
   final int price;
+  bool isLiked;
+  var changeFavourite;
 
+  @override
+  State<ProductsGrid> createState() => _ProductsGridState();
+}
+
+class _ProductsGridState extends State<ProductsGrid> {
 
   @override
   Widget build(BuildContext context) {
+    final productProvider = Provider.of<ProductProvider>(context);
+
     return
     Container(
        height : 100,
@@ -29,21 +40,24 @@ class ProductsGrid extends StatelessWidget {
         ),
       ],),
       child: Padding(
-        padding: EdgeInsets.all(width * 0.03),
+        padding: EdgeInsets.all(widget.width * 0.03),
         child: Column(
           children: [
             //image
-            Image.network(imageLink,
-                height: height * 0.2, width: width * 0.4),
-             SizedBox(height: height * 0.02),
-             Text(name, style: textStyle0,),
+            Image.network(widget.imageLink,
+                height: widget.height * 0.2, width: widget.width * 0.4),
+             SizedBox(height: widget.height * 0.02),
+             Text(widget.name, style: textStyle0,),
 
             Expanded(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children:  [
-                  Text('GHS$price', style: textStyle0,),
-                  const Icon(Icons.favorite_border),
+                  Text('GHS${widget.price}', style: textStyle0,),
+                  // IconButton(icon: widget.isLiked? const Icon(Icons.favorite
+                  // ):const Icon(Icons.favorite_border) , onPressed: (){setState((){
+                  //   widget.isLiked = !widget.isLiked;
+                  // });}),
                 ],
               ),
             )

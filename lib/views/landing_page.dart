@@ -1,6 +1,8 @@
 import 'package:ecommerce/components.dart';
+import 'package:ecommerce/controllers/products-provider.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce/constants.dart';
+import 'package:provider/provider.dart';
 
 import '../models/products.dart';
 
@@ -13,14 +15,7 @@ class LandingPage extends StatefulWidget {
 
 class _LandingPageState extends State<LandingPage> {
   TextEditingController search = TextEditingController();
-  List<Products> products= [
-    Products('Black Tee','1','https://firebasestorage.googleapis.com/v0/b/ecommerce-a1f58.appspot.com/o/black-tee.jpg?alt=media&token=15a638e2-4e0a-4e9e-9aa6-b132068f3a92',10,false),
-    Products('Blue Tee','2','https://firebasestorage.googleapis.com/v0/b/ecommerce-a1f58.appspot.com/o/blue-tee.jpg?alt=media&token=00f60c37-0c26-4b57-90f1-16539c09ffd9',10,false),
-    Products('Brown Tee','3','https://firebasestorage.googleapis.com/v0/b/ecommerce-a1f58.appspot.com/o/brown-tee.jpg?alt=media&token=53cf67e1-dd2b-4784-b5ec-f499f9e62ed0',10, false),
-    Products('Grey Tee','4','https://firebasestorage.googleapis.com/v0/b/ecommerce-a1f58.appspot.com/o/grey-tee.jpg?alt=media&token=4db1567a-55b4-41e4-a58b-2af0bfba3aa3',10, false),
-    Products('White Tee','5','https://firebasestorage.googleapis.com/v0/b/ecommerce-a1f58.appspot.com/o/white-tee.jpg?alt=media&token=8663c69f-c69c-408b-ae46-5949a9c092c2',10, false),
 
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +23,7 @@ class _LandingPageState extends State<LandingPage> {
     var width = MediaQuery.of(context).size.width;
     final double itemHeight = (height - kToolbarHeight - 24) /2;
     final double itemWidth = width /2;
+    final productProvider = Provider.of<ProductProvider>(context, listen: false);
 
     return SafeArea(
       child: Scaffold(
@@ -78,8 +74,8 @@ class _LandingPageState extends State<LandingPage> {
                     color: Colors.white,
                   ),
                   child: IconButton(
-                    icon: const Icon(Icons.legend_toggle, color: Colors.black),
-                    onPressed: () {},
+                    icon: const Icon(Icons.shopping_cart, color: Colors.black),
+                    onPressed: () {Navigator.pushNamed(context, 'cartPage');},
                   ),
                 )
               ],
@@ -88,10 +84,15 @@ class _LandingPageState extends State<LandingPage> {
            Expanded(
              child: GridView.builder(shrinkWrap : true,
                  gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(childAspectRatio: (itemWidth/itemHeight), crossAxisCount: 2, mainAxisSpacing: 10, crossAxisSpacing: 10),
-                 itemCount: products.length,
+                 itemCount: productProvider.products.length,
 
                  itemBuilder: (context, index) {
-               return ProductsGrid(height: height, width: width, imageLink: products[index].image!, name: products[index].name!, price: products[index].price!);
+               return ProductsGrid(height: height,
+                 width: width,
+                 imageLink: productProvider.products[index].image!,
+                 name: productProvider.products[index].name!,
+                 price: productProvider.products[index].price!,
+                 isLiked: false );
              }),
            )
           ]),
