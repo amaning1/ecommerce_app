@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-
+Color grayish = const Color(0xFFE4EBF2);
 const textStyle0 = TextStyle(fontSize: 14, fontFamily: 'Poppins');
 
 class Textfield0 extends StatelessWidget {

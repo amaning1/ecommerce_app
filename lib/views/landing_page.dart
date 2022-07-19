@@ -1,3 +1,4 @@
+import 'package:badges/badges.dart';
 import 'package:ecommerce/components.dart';
 import 'package:ecommerce/controllers/products-provider.dart';
 import 'package:flutter/material.dart';
@@ -62,12 +63,24 @@ class _LandingPageState extends State<LandingPage> {
                     borderRadius: BorderRadius.circular(20),
                     color: Colors.white,
                   ),
-                  width: width * 0.65,
+                  width: width * 0.55,
                   child: Textfield0(
                     controller: search,
                     icon: const Icon(Icons.search),
                   ),
                 ),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: Colors.white,
+                  ),
+                  child: Badge(
+                    badgeContent: Text(productProvider.likedProducts.length.toString()),
+                    child: IconButton(
+                      icon: const Icon(Icons.favorite, color: Colors.black),
+                      onPressed: () {Navigator.pushNamed(context, 'cartPage');},
+                    ),
+                  ),),
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
@@ -89,10 +102,20 @@ class _LandingPageState extends State<LandingPage> {
                  itemBuilder: (context, index) {
                return ProductsGrid(height: height,
                  width: width,
+                 icon: productProvider.likedProducts.contains(productProvider.products[index])? const Icon(Icons.favorite
+                 ):const Icon(Icons.favorite_border),
+                 id: productProvider.products[index].id!,
                  imageLink: productProvider.products[index].image!,
                  name: productProvider.products[index].name!,
                  price: productProvider.products[index].price!,
-                 isLiked: false );
+                 onPressed: productProvider.likedProducts.contains(productProvider.products[index]) ?
+                     (){ setState((){
+                       productProvider.likedProducts.remove(productProvider.products[index]);
+
+                   });}:   (){ setState((){
+                   productProvider.likedProducts.add(productProvider.products[index]);
+                 });}
+               );
              }),
            )
           ]),

@@ -25,6 +25,7 @@ class ProductProvider extends Manage {
   ];
 
   List<Products> likedProducts = [];
+  List<Products> cartProducts = [];
 
   void addToLiked(){
 

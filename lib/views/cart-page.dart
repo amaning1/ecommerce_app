@@ -35,11 +35,13 @@ class _CartPageState extends State<CartPage> {
                     itemCount: productProvider.likedProducts.length,
 
                     itemBuilder: (context, index) {
-                      return ProductsGrid(height: height,
+                      return LikedProductsGrid(height: height,
                           width: width,
+                          id: productProvider.products[index].id!,
                           imageLink: productProvider.products[index].image!,
                           name: productProvider.products[index].name!,
-                          price: productProvider.products[index].price!, isLiked: false,
+                          price: productProvider.products[index].price!,
+
                            );
                     }),
               ):const  Text('You have no liked Products', style: textStyle0),
