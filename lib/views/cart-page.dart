@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../components.dart';
 import '../constants.dart';
 import '../controllers/products-provider.dart';
@@ -25,32 +24,42 @@ class _CartPageState extends State<CartPage> {
     final productProvider = Provider.of<ProductProvider>(context, listen: false);
 
     return  SafeArea(child: Scaffold(
-      body: Padding(
-        padding:  EdgeInsets.all(width * 0.09),
-        child: Column(
-            children: <Widget>[
-              productProvider.likedProducts.isNotEmpty?Expanded(
-                child: GridView.builder(shrinkWrap : true,
-                    gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(childAspectRatio: (itemWidth/itemHeight), crossAxisCount: 2, mainAxisSpacing: 10, crossAxisSpacing: 10),
-                    itemCount: productProvider.likedProducts.length,
+      appBar: AppBar(),
+        body: Padding(
+          padding:  EdgeInsets.all(width * 0.09),
+          child: Column(
+              children: <Widget>[
+                productProvider.cartProducts.isNotEmpty?Column(
+                  children: [
+                    Expanded(
+                      child: GridView.builder(shrinkWrap : true,
+                          gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(childAspectRatio: (itemWidth/itemHeight), crossAxisCount: 2, mainAxisSpacing: 10, crossAxisSpacing: 10),
+                          itemCount: productProvider.cartProducts.length,
 
-                    itemBuilder: (context, index) {
-                      return LikedProductsGrid(height: height,
-                          width: width,
-                          id: productProvider.products[index].id!,
-                          imageLink: productProvider.products[index].image!,
-                          name: productProvider.products[index].name!,
-                          price: productProvider.products[index].price!,
+                          itemBuilder: (context, index) {
+                            return LikedProductsGrid(height: height,
+                              width: width,
+                              id: productProvider.cartProducts[index].id!,
+                              imageLink: productProvider.cartProducts[index].image!,
+                              name: productProvider.cartProducts[index].name!,
+                              price: productProvider.cartProducts[index].price!,
 
-                           );
-                    }),
-              ):const  Text('You have no liked Products', style: textStyle0),
-            ]
+                            );
+                          }),
+                    ),
+                    ElevatedButton(onPressed: () {  }, child: const Text('Proceed to Checkout', style: textStyle0),)
+                  ],
+                ):const  Text('You have nothing in your cart', style: textStyle0),
+              ]
 
-        ),
-      )
+          ),
+        )
 
 
     ));
   }
 }
+
+
+
+

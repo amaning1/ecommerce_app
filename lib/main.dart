@@ -1,7 +1,9 @@
 import 'package:ecommerce/controllers/manage.dart';
 import 'package:ecommerce/controllers/products-provider.dart';
 import 'package:ecommerce/views/cart-page.dart';
+import 'package:ecommerce/views/item-page.dart';
 import 'package:ecommerce/views/landing_page.dart';
+import 'package:ecommerce/views/liked-products-page.dart';
 import 'package:ecommerce/views/sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -25,11 +27,13 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blueGrey,
         ),
         home: const LandingPage(),
-        initialRoute: '/landingPage',
+        initialRoute: 'landingPage',
         routes: {
-          '/landingPage': (context) => const LandingPage(),
+          'landingPage': (context) => const LandingPage(),
           'loginPage': (context) => const SignIn(),
           'cartPage': (context) => const CartPage(),
+          'likedProductsPage': (context) => const LikedProductsPage(),
+          ItemPage.routeName: (context) => const ItemPage(),
         },
       ),
     );

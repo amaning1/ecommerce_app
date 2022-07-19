@@ -19,7 +19,7 @@ class Textfield0 extends StatelessWidget {
           contentPadding: const EdgeInsets.only(left: 5),
           prefixIcon: icon,
           //Icon(Icons.search),
-          labelText: 'Cleansers',
+          labelText: 'Search Products',
           floatingLabelStyle: const TextStyle(fontFamily: 'Poppins')),
     );
   }

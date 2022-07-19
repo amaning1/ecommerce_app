@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 
 class ProductsGrid extends StatefulWidget {
-    ProductsGrid({Key? key, this.onPressed, this.height, this.width, required this.imageLink, required this.name, required this.price, this.icon, required this.id}) : super(key: key);
+    ProductsGrid({Key? key,this.onPressedImage,this.onPressedCart, this.onPressed, this.height, this.width, required this.imageLink, required this.name, required this.price, this.icon, required this.id}) : super(key: key);
 
 
   final height;
@@ -16,6 +16,8 @@ class ProductsGrid extends StatefulWidget {
   final String id;
   var onPressed;
   var icon;
+  var  onPressedCart;
+  var onPressedImage;
 
   @override
   State<ProductsGrid> createState() => _ProductsGridState();
@@ -45,10 +47,17 @@ class _ProductsGridState extends State<ProductsGrid> {
         child: Column(
           children: [
             //image
-            Image.network(widget.imageLink,
-                height: widget.height * 0.2, width: widget.width * 0.4),
-             SizedBox(height: widget.height * 0.01),
-             Text(widget.name, style: textStyle0,),
+            GestureDetector(
+              onTap: widget.onPressedImage,
+              child: Column(
+                children: [
+                  Image.network(widget.imageLink,
+                      height: widget.height * 0.2, width: widget.width * 0.4),
+                   SizedBox(height: widget.height * 0.01),
+                   Text(widget.name, style: textStyle0,),
+                ],
+              ),
+            ),
 
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -58,19 +67,22 @@ class _ProductsGridState extends State<ProductsGrid> {
               ],
             ),
             Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: grayish,
-                  borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      topRight: Radius.circular(10),
-                      bottomLeft: Radius.circular(10),
-                      bottomRight: Radius.circular(10)),
+              child: GestureDetector(
+                onTap: widget.onPressedCart,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: grayish,
+                    borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        topRight: Radius.circular(10),
+                        bottomLeft: Radius.circular(10),
+                        bottomRight: Radius.circular(10)),
+                  ),
+                  child: const Padding(
+                    padding: EdgeInsets.all(5.0),
+                    child: Center(child: Text('Add to Cart')),
+                  )
                 ),
-                child: const Padding(
-                  padding: EdgeInsets.all(5.0),
-                  child: Center(child: Text('Add to Cart')),
-                )
               ),
             ),
             //SizedBox(height: widget.height * 0.01),
@@ -79,7 +91,6 @@ class _ProductsGridState extends State<ProductsGrid> {
         ),
       ),
     );
-
   }
 }
 

@@ -1,11 +1,13 @@
 import 'package:badges/badges.dart';
 import 'package:ecommerce/components.dart';
 import 'package:ecommerce/controllers/products-provider.dart';
+import 'package:ecommerce/models/screen-arguments.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce/constants.dart';
 import 'package:provider/provider.dart';
 
 import '../models/products.dart';
+import 'item-page.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({Key? key}) : super(key: key);
@@ -25,6 +27,7 @@ class _LandingPageState extends State<LandingPage> {
     final double itemHeight = (height - kToolbarHeight - 24) /2;
     final double itemWidth = width /2;
     final productProvider = Provider.of<ProductProvider>(context, listen: false);
+
 
     return SafeArea(
       child: Scaffold(
@@ -74,21 +77,21 @@ class _LandingPageState extends State<LandingPage> {
                     borderRadius: BorderRadius.circular(20),
                     color: Colors.white,
                   ),
-                  child: Badge(
-                    badgeContent: Text(productProvider.likedProducts.length.toString()),
-                    child: IconButton(
-                      icon: const Icon(Icons.favorite, color: Colors.black),
-                      onPressed: () {Navigator.pushNamed(context, 'cartPage');},
-                    ),
+                  child: IconButton(
+                    icon: const Icon(Icons.favorite, color: Colors.black),
+                    onPressed: () {Navigator.pushNamed(context, 'likedProductsPage');},
                   ),),
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     color: Colors.white,
                   ),
-                  child: IconButton(
-                    icon: const Icon(Icons.shopping_cart, color: Colors.black),
-                    onPressed: () {Navigator.pushNamed(context, 'cartPage');},
+                  child: Badge(
+                    badgeContent: Text(productProvider.cartProducts.length.toString()),
+                    child: IconButton(
+                      icon: const Icon(Icons.shopping_cart, color: Colors.black),
+                      onPressed: () {Navigator.pushNamed(context, 'cartPage');},
+                    ),
                   ),
                 )
               ],
@@ -102,19 +105,33 @@ class _LandingPageState extends State<LandingPage> {
                  itemBuilder: (context, index) {
                return ProductsGrid(height: height,
                  width: width,
+                 onPressedImage: (){ Navigator.pushNamed(context, ItemPage.routeName,arguments: ScreenArguments(productProvider.products[index].image!, productProvider.products[index].price.toString(), productProvider.products[index].name!, productProvider.products[index].description!));},
                  icon: productProvider.likedProducts.contains(productProvider.products[index])? const Icon(Icons.favorite
                  ):const Icon(Icons.favorite_border),
                  id: productProvider.products[index].id!,
                  imageLink: productProvider.products[index].image!,
                  name: productProvider.products[index].name!,
                  price: productProvider.products[index].price!,
-                 onPressed: productProvider.likedProducts.contains(productProvider.products[index]) ?
+                 onPressed:
+                 productProvider.likedProducts.contains(productProvider.products[index]) ?
                      (){ setState((){
                        productProvider.likedProducts.remove(productProvider.products[index]);
 
                    });}:   (){ setState((){
                    productProvider.likedProducts.add(productProvider.products[index]);
-                 });}
+                 });},
+
+                   onPressedCart: productProvider.cartProducts.contains(productProvider.products[index]) ?  (){
+                 const snackBar = SnackBar(
+                    content: Text('Item already in cart'),
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar) ;}:
+                       (){
+                     setState(() {
+                       productProvider.cartProducts.add(productProvider.products[index]);
+                     });
+
+                   }
                );
              }),
            )
